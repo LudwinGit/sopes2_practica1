@@ -6,7 +6,10 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            datas: []
+            datas: [],
+            ram_total: 0,
+            ram_consumo: 0,
+            ram_porcentaje: 0
         };
         this.getData = this.getData.bind(this)
     }
@@ -32,7 +35,10 @@ class App extends React.Component {
                 data.push(newItem)
                 this.setState({
                     ...this.state,
-                    datas: data
+                    datas: data,
+                    ram_total: res.data.Ramt,
+                    ram_consumo: res.data.Ramc,
+                    ram_porcentaje: res.data.Ramp
                 })
             })
             .catch((e) => {
@@ -44,7 +50,17 @@ class App extends React.Component {
         return (
             <div className="container-fluid pb-5">
                 <div className="row">
-                    <div className="col-md-6 offset-3">
+                    <div className="col-md-6">
+                        <div className="card">
+                            <div className="card-header">Información RAM</div>
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item"><b>Memoria Total: </b>{this.state.ram_total}</li>
+                                <li className="list-group-item"><b>Memoria Usada: </b>{this.state.ram_consumo}</li>
+                                <li className="list-group-item"><b>Porcentaje: </b>{this.state.ram_porcentaje}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
                         <LineChart
                             data={this.state.datas}
                             title={"Porcentaje"}
@@ -52,8 +68,8 @@ class App extends React.Component {
                         />
                     </div>
                     <div className="col-md-12">
-                    <br /><br />
-                    <Table />
+                        <br /><br />
+                        <Table />
                     </div>
                 </div>
             </div>
